@@ -1,0 +1,78 @@
+version: 1
+project: SquidKeys
+storage_backend:
+  type: duckdb
+  default_path: ./keystore.duckdb
+crypto:
+  model: envelope-encryption
+  data_cipher: AES-256-GCM
+  wrap_cipher: AES-256-GCM
+  aad_binding:
+    - agent_id
+    - record_type
+    - record_identity
+interfaces:
+  fastapi:
+    base_url: http://127.0.0.1:8080
+    endpoints:
+      - method: GET
+        path: /health
+        purpose: health check
+      - method: PUT
+        path: /v1/authorizations
+        store_method: save_authorization
+      - method: GET
+        path: /v1/authorizations/{agent_id}/{provider}
+        store_method: get_authorization
+      - method: DELETE
+        path: /v1/authorizations/{agent_id}/{provider}
+        store_method: delete_authorization
+      - method: PUT
+        path: /v1/passwords
+        store_method: save_password
+      - method: GET
+        path: /v1/passwords/{agent_id}/{name}
+        store_method: get_password
+      - method: DELETE
+        path: /v1/passwords/{agent_id}/{name}
+        store_method: delete_password
+      - method: GET
+        path: /v1/keys/status
+        store_method: key_status
+      - method: POST
+        path: /v1/keys/rewrap
+        store_method: rewrap_all_records
+  mcp:
+    transport: stdio
+    server_entrypoint: squidkeys-mcp
+    tools:
+      - tool: save_authorization
+        store_method: save_authorization
+      - tool: get_authorization
+        store_method: get_authorization
+      - tool: delete_authorization
+        store_method: delete_authorization
+      - tool: save_password
+        store_method: save_password
+      - tool: get_password
+        store_method: get_password
+      - tool: delete_password
+        store_method: delete_password
+      - tool: key_status
+        store_method: key_status
+      - tool: rewrap_all_records
+        store_method: rewrap_all_records
+configuration:
+  env_vars:
+    - name: KEY_STORE_DB_PATH
+      required: false
+      default: ./keystore.duckdb
+    - name: KEY_STORE_KEKS_JSON
+      required: true
+      example: '{"v1":"<base64-32-byte-key>","v2":"<base64-32-byte-key>"}'
+    - name: KEY_STORE_ACTIVE_KEK_VERSION
+      required: false
+      default: highest configured version
+    - name: KEY_STORE_BEARER_TOKEN
+      required: false
+      description: If set, all /v1 FastAPI routes require Authorization: Bearer <token>
