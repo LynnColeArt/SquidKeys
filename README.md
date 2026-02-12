@@ -98,3 +98,7 @@ Interface-to-storage mapping is documented in:
 ```bash
 pytest
 ```
+
+## License
+
+GPL-3.0-only. See `LICENSE`.

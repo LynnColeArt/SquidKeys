@@ -7,7 +7,14 @@ name = "squidkeys"
 version = "0.2.0"
 description = "Secure DuckDB-backed credential storage for agent systems"
 readme = "README.md"
+license = {text = "GPL-3.0-only"}
 requires-python = ">=3.10"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Programming Language :: Python :: 3",
+]
 dependencies = [
   "cryptography>=42.0.0",
   "duckdb>=1.4.0",
