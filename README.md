@@ -99,6 +99,23 @@ Interface-to-storage mapping is documented in:
 pytest
 ```
 
+## AI-Generated / Automated Contributions
+
+Automated and AI-assisted contributions are welcome, provided they meet the same production standards as human-written code.
+
+For production code, placeholders are not acceptable.
+
+- Unit tests may use mocks and stubs.
+- New functionality must include unit tests (or updates to existing tests) that cover the behavior.
+
+Before submitting generated changes, verify:
+
+- No functional file includes temporary placeholders (`TODO`, `FIXME`, `NotImplementedError`).
+- Mocked/stubbed behavior is limited to tests and fixtures.
+- Failure states are telemetry and should remain visible; do not introduce graceful-fallback behavior that hides runtime failures.
+- Do not merge substantial architectural changes without a tracked issue number or an associated public forum thread.
+- All relevant tests pass before merge.
+
 ## License
 
 GPL-3.0-only. See `LICENSE`.
